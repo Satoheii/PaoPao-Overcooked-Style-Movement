@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Deterministic>true</Deterministic>
+    <DebugType>portable</DebugType>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildProjectDirectory)\bin\**;$(MSBuildProjectDirectory)\obj\**</DefaultItemExcludes>
+    <PaoPaoGameDir Condition="'$(PaoPaoGameDir)' == '' and '$(PAOPAO_GAME_DIR)' != ''">$(PAOPAO_GAME_DIR)</PaoPaoGameDir>
+    <AssemblyName>OvercookedStyleMovement</AssemblyName>
+    <RootNamespace>Satohei.PaoPao.OvercookedStyleMovement</RootNamespace>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony" HintPath="$(PaoPaoGameDir)\BepInEx\core\0Harmony.dll" Private="false" />
+    <Reference Include="BepInEx.Core" HintPath="$(PaoPaoGameDir)\BepInEx\core\BepInEx.Core.dll" Private="false" />
+    <Reference Include="BepInEx.Unity.IL2CPP" HintPath="$(PaoPaoGameDir)\BepInEx\core\BepInEx.Unity.IL2CPP.dll" Private="false" />
+    <Reference Include="Il2CppInterop.Runtime" HintPath="$(PaoPaoGameDir)\BepInEx\core\Il2CppInterop.Runtime.dll" Private="false" />
+    <Reference Include="Il2Cppmscorlib" HintPath="$(PaoPaoGameDir)\BepInEx\interop\Il2Cppmscorlib.dll" Private="false" />
+    <Reference Include="PawPaw.Game" HintPath="$(PaoPaoGameDir)\BepInEx\interop\PawPaw.Game.dll" Private="false" />
+    <Reference Include="Plugins.KCC" HintPath="$(PaoPaoGameDir)\BepInEx\interop\Plugins.KCC.dll" Private="false" />
+    <Reference Include="Unity.Netcode.Runtime" HintPath="$(PaoPaoGameDir)\BepInEx\interop\Unity.Netcode.Runtime.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(PaoPaoGameDir)\BepInEx\interop\UnityEngine.CoreModule.dll" Private="false" />
+  </ItemGroup>
+  <Target Name="ValidatePaoPaoGameDir" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="'$(PaoPaoGameDir)' == ''" Text="Set PaoPaoGameDir to the PAO PAO game directory before building." />
+    <Error Condition="'$(PaoPaoGameDir)' != '' and !Exists('$(PaoPaoGameDir)\PaoPao.exe')" Text="PaoPaoGameDir is not a valid PAO PAO game directory: $(PaoPaoGameDir)" />
+    <Error Condition="'%(Reference.HintPath)' != '' and !Exists('%(Reference.HintPath)')" Text="Missing build reference: %(Reference.HintPath). Install BepInEx 6 and start PAO PAO once before building." />
+  </Target>
+</Project>
